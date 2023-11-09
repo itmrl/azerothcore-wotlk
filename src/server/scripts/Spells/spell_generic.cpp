@@ -3997,7 +3997,16 @@ enum Mounts
     SPELL_BIG_BLIZZARD_BEAR_100         = 58999,
     SPELL_BIG_BLIZZARD_BEAR_150         = 58999,
     SPELL_BIG_BLIZZARD_BEAR_280         = 58999,
-    SPELL_BIG_BLIZZARD_BEAR_310         = 58999
+    SPELL_BIG_BLIZZARD_BEAR_310         = 58999,
+
+    // 野蛮角斗士的虚空幼龙58615
+    SPELL_BRUTAL_NETHER_DRAKE_150           = 90304,
+    SPELL_BRUTAL_NETHER_DRAKE_310           = 90305,
+
+    // 纯血火鹰
+    SPELL_FIRE_HAWK_150        = 90306,
+    SPELL_FIRE_HAWK_310        = 90307
+
 };
 
 /* 58983 - Big Blizzard Bear (spell_big_blizzard_bear)
@@ -4008,7 +4017,10 @@ enum Mounts
    72286 - Invincible (spell_invincible)
    74856 - Blazing Hippogryph (spell_blazing_hippogryph)
    75614 - Celestial Steed (spell_celestial_steed)
-   75973 - X-53 Touring Rocket (spell_x53_touring_rocket) */
+   75973 - X-53 Touring Rocket (spell_x53_touring_rocket)
+   58615 - Brutal Nether Drake (spell_brutal_nether_drake)
+   90301 - Fire Hawk (spell_fire_hawk)
+*/
 class spell_gen_mount : public SpellScript
 {
     PrepareSpellScript(spell_gen_mount);
@@ -4090,6 +4102,8 @@ public:
                 default:
                     break;
             }
+
+            LOG_INFO("spell.generic", "mount is {}", mount);
 
             if (mount)
             {
@@ -5117,6 +5131,8 @@ void AddSC_generic_spell_scripts()
     RegisterSpellScriptWithArgs(spell_gen_mount, "spell_headless_horseman_mount", 0, SPELL_HEADLESS_HORSEMAN_MOUNT_60, SPELL_HEADLESS_HORSEMAN_MOUNT_100, SPELL_HEADLESS_HORSEMAN_MOUNT_150, SPELL_HEADLESS_HORSEMAN_MOUNT_280, 0);
     RegisterSpellScriptWithArgs(spell_gen_mount, "spell_winged_steed_of_the_ebon_blade", 0, 0, 0, SPELL_WINGED_STEED_150, SPELL_WINGED_STEED_280, 0);
     RegisterSpellScriptWithArgs(spell_gen_mount, "spell_big_love_rocket", SPELL_BIG_LOVE_ROCKET_0, SPELL_BIG_LOVE_ROCKET_60, SPELL_BIG_LOVE_ROCKET_100, SPELL_BIG_LOVE_ROCKET_150, SPELL_BIG_LOVE_ROCKET_310, 0);
+    RegisterSpellScriptWithArgs(spell_gen_mount, "spell_brutal_nether_drake", 0, 0, 0, SPELL_BRUTAL_NETHER_DRAKE_150, SPELL_BRUTAL_NETHER_DRAKE_310, 0);
+    RegisterSpellScriptWithArgs(spell_gen_mount, "spell_fire_hawk", 0, 0, 0, SPELL_FIRE_HAWK_150, SPELL_FIRE_HAWK_310, 0);
     RegisterSpellScriptWithArgs(spell_gen_mount, "spell_invincible", 0, SPELL_INVINCIBLE_60, SPELL_INVINCIBLE_100, SPELL_INVINCIBLE_150, SPELL_INVINCIBLE_310, 0);
     RegisterSpellScriptWithArgs(spell_gen_mount, "spell_blazing_hippogryph", 0, 0, 0, SPELL_BLAZING_HIPPOGRYPH_150, SPELL_BLAZING_HIPPOGRYPH_280, 0);
     RegisterSpellScriptWithArgs(spell_gen_mount, "spell_celestial_steed", 0, SPELL_CELESTIAL_STEED_60, SPELL_CELESTIAL_STEED_100, SPELL_CELESTIAL_STEED_150, SPELL_CELESTIAL_STEED_280, SPELL_CELESTIAL_STEED_310);
