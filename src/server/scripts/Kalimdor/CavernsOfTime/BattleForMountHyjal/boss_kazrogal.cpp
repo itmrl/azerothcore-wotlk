@@ -197,8 +197,8 @@ public:
         void OnPeriodic(AuraEffect const* aurEff)
         {
             Unit* target = GetTarget();
-
-            if (target->GetPower(POWER_MANA) == 0)
+            // 当玩家魔法低于600时触发爆炸技能
+            if (target->GetPower(POWER_MANA) < 600)
             {
                 target->CastSpell(target, SPELL_MARK_DAMAGE, true, nullptr, aurEff);
                 // Remove aura
