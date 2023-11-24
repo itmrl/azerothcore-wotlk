@@ -30,16 +30,26 @@ enum Says
 
 enum Spells
 {
+    // 潜行
     SPELL_STEALTH                   = 34189,
+    // Akama Soul Channel
     SPELL_AKAMA_SOUL_CHANNEL        = 40447,
+    // 影魂引导
     SPELL_SHADE_SOUL_CHANNEL        = 40401,
+    // 闪电链
     SPELL_CHAIN_LIGHTNING           = 39945,
+    // 毁灭之毒
     SPELL_DESTRUCTIVE_POISON        = 40874,
+    // Summon Shade of Akama Trigger
     SPELL_SHADE_OF_AKAMA_TRIGGER    = 40955,
+    // Akama Soul Retrieve Channel
     SPELL_AKAMA_SOUL_RETRIEVE       = 40902,
 
+    // Ashtongue Wave B
     SPELL_ASHTONGUE_WAVE_B           = 42035,
+    // 召唤灰舌巫师
     SPELL_SUMMON_ASHTONGUE_SORCERER  = 40476,
+    // 召唤灰舌防御者
     SPELL_SUMMON_ASHTONGUE_DEFENDER  = 40474
 };
 

@@ -32,22 +32,37 @@ enum Says
 
 enum Spells
 {
+    // 烧尽
     SPELL_INCINERATE                = 40239,
+    // 召唤末日之花
     SPELL_SUMMON_DOOM_BLOSSOM       = 40188,
+    // 毁灭之影
     SPELL_CRUSHING_SHADOWS          = 40243,
+    // 死亡之影
     SPELL_SHADOW_OF_DEATH           = 40251,
+    // 移除死亡之影
     SPELL_SHADOW_OF_DEATH_REMOVE    = 41999,
+    // 召唤灵魂
     SPELL_SUMMON_SPIRIT             = 40266,
+    // 召唤骷髅
     SPELL_SUMMON_SKELETON1          = 40270,
+    // 召唤骷髅
     SPELL_SUMMON_SKELETON2          = 41948,
+    // 召唤骷髅
     SPELL_SUMMON_SKELETON3          = 41949,
+    // 召唤骷髅
     SPELL_SUMMON_SKELETON4          = 41950,
+    // Possess Spirit Immune
     SPELL_POSSESS_SPIRIT_IMMUNE     = 40282,
+    // 灵魂复仇
     SPELL_SPIRITUAL_VENGEANCE       = 40268,
+    // 短暂昏迷
     SPELL_BRIEF_STUN                = 41421,
-
+    // 灵魂长枪
     SPELL_SPIRIT_LANCE              = 40157,
+    // 灵魂锁链
     SPELL_SPIRIT_CHAINS             = 40175,
+    // 灵魂箭雨
     SPELL_SPIRIT_VOLLEY             = 40314
 };
 
