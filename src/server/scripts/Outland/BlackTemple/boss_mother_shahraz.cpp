@@ -32,25 +32,45 @@ enum Says
 
 enum Spells
 {
+    // 棱彩光环：暗影
     SPELL_PRISMATIC_AURA_SHADOW     = 40880,
+    // 棱彩光环：火焰
     SPELL_PRISMATIC_AURA_FIRE       = 40882,
+    // 棱彩光环：自然
     SPELL_PRISMATIC_AURA_NATURE     = 40883,
+    // 棱彩光环：奥术
     SPELL_PRISMATIC_AURA_ARCANE     = 40891,
+    // 棱彩光环：冰霜
     SPELL_PRISMATIC_AURA_FROST      = 40896,
+    // 棱彩光环：神圣
     SPELL_PRISMATIC_AURA_HOLY       = 40897,
+    // 军刀猛刺
     SPELL_SABER_LASH_AURA           = 40816,
+    // 军刀猛刺 对最多3名敌人造成伤害，伤害将由所有受到影响的目标平均分担。
     SPELL_SABER_LASH                = 40810,
+    // 沉默尖啸
     SPELL_SILENCING_SHRIEK          = 40823,
+    // Random Periodic
     SPELL_RANDOM_PERIODIC           = 40867,
+    // Sinful Periodic 释放罪孽射线40827
     SPELL_SINFUL_PERIODIC           = 40862,
+    // Sinister Periodic 释放邪恶射线40859
     SPELL_SINISTER_PERIODIC         = 40863,
+    // 邪恶射线持续效果 释放败德射线40860
     SPELL_VILE_PERIODIC             = 40865,
+    // 堕落射线持续效果 释放堕落射线40861
     SPELL_WICKED_PERIODIC           = 40866,
+    // 致命吸引
     SPELL_FATAL_ATTRACTION          = 40869,
+    // 致命吸引-光环
     SPELL_FATAL_ATTRACTION_AURA     = 41001,
+    // 致命吸引-伤害
     SPELL_FATAL_ATTRACTION_DAMAGE   = 40871,
+    // 狂暴
     SPELL_ENRAGE                    = 45078,
+    // 狂乱
     SPELL_FRENZY                    = 40683,
+    // 军刀痛击
     SPELL_SABER_LASH_IMMUNITY       = 43690
 };
 
