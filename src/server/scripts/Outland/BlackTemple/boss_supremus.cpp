@@ -42,7 +42,7 @@ enum Supremus
     NPC_SUPREMUS_PUNCH_STALKER      = 23095,
 
     EVENT_SPELL_BERSERK             = 1,
-    EVENT_SPELL_HATEFUL_STRIKE      = 2,
+    EVENT_SPELL_HATEFUL_STRIKE = 2,
     EVENT_SPELL_MOLTEN_FLAMES       = 3,
     EVENT_SWITCH_PHASE              = 4,
     EVENT_SPELL_VOLCANIC_ERUPTION   = 5,
@@ -90,7 +90,7 @@ public:
             // P1
             if (!run)
             {
-                events.ScheduleEvent(EVENT_SPELL_HATEFUL_STRIKE, 5000, EVENT_GROUP_ABILITIES);
+                events.ScheduleEvent(EVENT_SPELL_HATEFUL_STRIKE, 6000, EVENT_GROUP_ABILITIES);
                 // 转P1阶段释放熔岩烈焰
                 events.ScheduleEvent(EVENT_SPELL_MOLTEN_FLAMES, 20000, EVENT_GROUP_ABILITIES);
                 me->ApplySpellImmune(0, IMMUNITY_STATE, SPELL_AURA_MOD_TAUNT, false);
@@ -141,9 +141,11 @@ public:
                 Unit* unit = ObjectAccessor::GetUnit(*me, (*i)->getUnitGuid());
                 if (unit && me->IsWithinMeleeRange(unit))
                     if (!target || unit->GetHealth() > target->GetHealth())
-                        target = unit;
+                        if(unit != me->GetVictim())
+                            target = unit;
             }
-
+            if(!target)
+                target = me->GetVictim();
             return target;
         }
 
@@ -164,7 +166,7 @@ public:
                 case EVENT_SPELL_HATEFUL_STRIKE:
                     if (Unit* target = FindHatefulStrikeTarget())
                         me->CastSpell(target, SPELL_HATEFUL_STRIKE, false);
-                    events.ScheduleEvent(EVENT_SPELL_HATEFUL_STRIKE, urand(1500, 3000), EVENT_GROUP_ABILITIES);
+                    events.ScheduleEvent(EVENT_SPELL_HATEFUL_STRIKE, 6000, EVENT_GROUP_ABILITIES);
                     break;
                 case EVENT_SPELL_MOLTEN_FLAMES:
                     me->CastSpell(me, SPELL_MOLTEN_PUNCH, false);
