@@ -61,56 +61,94 @@ enum Says
 enum Spells
 {
     // Phase 1
+    // 双武器
     SPELL_DUAL_WIELD                    = 42459,
+    // 狂暴
     SPELL_BERSERK                       = 45078,
+    // 烈焰碰撞
     SPELL_FLAME_CRASH                   = 40832,
+    // 吸取灵魂
     SPELL_DRAW_SOUL                     = 40904,
+    // 吸取灵魂
     SPELL_DRAW_SOUL_HEAL                = 40903,
+    // 寄生暗影魔
     SPELL_PARASITIC_SHADOWFIEND         = 41917,
+    // 寄生暗影魔
     SPELL_PARASITIC_SHADOWFIEND_TRIGGER = 41914,
+    // 召唤寄生暗影魔
     SPELL_SUMMON_PARASITIC_SHADOWFIENDS = 41915,
 
     // Phase 2
+    // 投掷利刃
     SPELL_THROW_GLAIVE                  = 39635,
+    // 投掷利刃
     SPELL_THROW_GLAIVE2                 = 39849,
+    // 飞刃回归
     SPELL_GLAIVE_RETURNS                = 39873,
+    // 召唤宽剑
     SPELL_SUMMON_GLAIVE                 = 41466,
+    // 火球术
     SPELL_FIREBALL                      = 40598,
+    // 黑暗弹幕
     SPELL_DARK_BARRAGE                  = 40585,
+    // 魔眼冲击
     SPELL_EYE_BLAST                     = 39908,
+    // 狂野怨灵(狂暴)
     SPELL_UNCAGED_WRATH                 = 39869,
+    // 烈焰冲击
     SPELL_FLAME_BLAST                   = 40631,
+    // 冲锋
     SPELL_CHARGE                        = 42003,
 
     // Phase 3
+    // 苦痛之焰
     SPELL_AGONIZING_FLAMES              = 40932,
+    // 召唤玛维
     SPELL_SUMMON_MAIEV                  = 40403,
+    // 暗影牢笼
     SPELL_SHADOW_PRISON                 = 40647,
+    // Teleport Visual Only
     SPELL_TELEPORT_VISUAL_ONLY          = 41232,
 
     // Phase 4
     SPELL_DEMON_TRANSFORM_1             = 40511,
     SPELL_DEMON_TRANSFORM_2             = 40398,
     SPELL_DEMON_TRANSFORM_3             = 40510,
+    // 恶魔形态
     SPELL_DEMON_FORM                    = 40506,
+    // 暗影冲击
     SPELL_SHADOW_BLAST                  = 41078,
+    // 火焰爆裂
     SPELL_FLAME_BURST                   = 41126,
+    // 火焰爆裂
     SPELL_FLAME_BURST_EFFECT            = 41131,
+    // 召唤影魔
     SPELL_SUMMON_SHADOW_DEMON           = 41117,
+    // 吞噬灵魂
     SPELL_CONSUME_SOUL                  = 41080,
+    // 寻找目标
     SPELL_FIND_TARGET                   = 41081,
 
     // Phase 5
+    // 狂乱
     SPELL_FRENZY                        = 40683,
+    // 传送玛维
     SPELL_TELEPORT_MAIEV                = 41221,
+    // 暗影打击
     SPELL_SHADOW_STRIKE                 = 40685,
+    // 投掷匕首
     SPELL_THROW_DAGGER                  = 41152,
+    // 死亡
     SPELL_DEATH                         = 41220,
 
     // Cage
+    // 禁锢
     SPELL_CAGED_DEBUFF                  = 40695,
+    // 禁锢
     SPELL_CAGED_SUMMON1                 = 40696,
+    // 禁锢
     SPELL_CAGED_SUMMON8                 = 40703,
+    // 牢笼陷阱
     SPELL_CAGE_TRAP                     = 40760
 };
 
@@ -1145,6 +1183,7 @@ public:
         void OnPeriodic(AuraEffect const*  /*aurEff*/)
         {
             PreventDefaultAction();
+            // 距离蛋刀超过35码触发狂暴技能
             if (Unit* caster = GetCaster())
             {
                 if (GetTarget()->GetDistance2d(caster) > 25.0f)
@@ -1155,6 +1194,7 @@ public:
             }
 
             // xinef: ugly hax, dunno how it really works on blizz
+            // 以两个刀为圆心,超过半径35码内的交集区间的玩家触发冲锋技能
             Map::PlayerList const& pl = GetTarget()->GetMap()->GetPlayers();
             for (Map::PlayerList::const_iterator itr = pl.begin(); itr != pl.end(); ++itr)
                 if (Player* player = itr->GetSource())
