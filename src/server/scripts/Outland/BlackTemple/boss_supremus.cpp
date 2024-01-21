@@ -25,12 +25,19 @@ enum Supremus
     EMOTE_PUNCH_GROUND              = 1,
     EMOTE_GROUND_CRACK              = 2,
 
+    // 纠缠自身
     SPELL_SNARE_SELF                = 41922,
+    // 熔岩打击 召唤NPC_SUPREMUS_PUNCH_STALKER，释放熔岩烈焰
     SPELL_MOLTEN_PUNCH              = 40126,
+    // 仇恨打击
     SPELL_HATEFUL_STRIKE            = 41926,
+    // 火山喷发
     SPELL_VOLCANIC_ERUPTION         = 40276,
+    // 火山喷发
     SPELL_VOLCANIC_ERUPTION_TRIGGER = 40117,
+    // 狂暴
     SPELL_BERSERK                   = 45078,
+    // 冲锋
     SPELL_CHARGE                    = 41581,
 
     NPC_SUPREMUS_PUNCH_STALKER      = 23095,
@@ -64,14 +71,17 @@ struct boss_supremus : public BossAI
         events.CancelEventGroup(EVENT_GROUP_ABILITIES);
         events.ScheduleEvent(EVENT_SWITCH_PHASE, 60000);
         DoResetThreatList();
-
+        // P1
         if (!run)
         {
             events.ScheduleEvent(EVENT_SPELL_HATEFUL_STRIKE, 5000, EVENT_GROUP_ABILITIES);
+            // 转P1阶段释放熔岩烈焰
+            events.ScheduleEvent(EVENT_SPELL_MOLTEN_FLAMES, 20000, EVENT_GROUP_ABILITIES);
             me->ApplySpellImmune(0, IMMUNITY_STATE, SPELL_AURA_MOD_TAUNT, false);
             me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_ATTACK_ME, false);
             me->RemoveAurasDueToSpell(SPELL_SNARE_SELF);
         }
+        // P2
         else
         {
             events.ScheduleEvent(EVENT_SPELL_VOLCANIC_ERUPTION, 5000, EVENT_GROUP_ABILITIES);
@@ -110,9 +120,13 @@ struct boss_supremus : public BossAI
             Unit* unit = ObjectAccessor::GetUnit(*me, (*i)->getUnitGuid());
             if (unit && me->IsWithinMeleeRange(unit))
                 if (!target || unit->GetHealth() > target->GetHealth())
-                    target = unit;
+                    // 选择非当前目标作为目标
+                    if(unit != me->GetVictim())
+                        target = unit;
         }
-
+        // 如果当前目标不存在则选择当前目标
+        if(!target)
+            target = me->GetVictim();
         return target;
     }
 
