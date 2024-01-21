@@ -16,9 +16,9 @@
  */
 
 #include "CreatureGroups.h"
+#include "InstanceMapScript.h"
 #include "InstanceScript.h"
 #include "Player.h"
-#include "ScriptMgr.h"
 #include "TaskScheduler.h"
 #include "temple_of_ahnqiraj.h"
 
@@ -210,15 +210,9 @@ public:
             return true;
         }
 
-        void Update(uint32 diff) override
-        {
-            scheduler.Update(diff);
-        }
-
     private:
         GuidVector CThunGraspGUIDs;
         uint32 BugTrioDeathCount;
-        TaskScheduler scheduler;
     };
 };
 
