@@ -450,10 +450,10 @@ function SHOP_UI.LevelHandler(player, data)
 
     -- 判断如果是一命模式玩家，不允许使用该服务 TODO
     local guid = player:GetGUIDLow()
-    local result = CharDBQuery("SELECT GUID,DEAD FROM character_one_life where guid=" .. guid)
+    local result = CharDBQuery("SELECT GUID,DEAD FROM character_survival_mode where mode in (2,3) guid=" .. guid)
     if result then
         --一命模式玩家禁止使用该服务。
-        player:SendAreaTriggerMessage("|cFFFF0000您当前生存模式为【一命模式】,不允许使用本服务！|r")
+        player:SendAreaTriggerMessage("|cFFFF0000您当前生存模式不允许使用本服务！|r")
         player:PlayDirectSound(GetSoundEffect("cantUse", player:GetRace(), player:GetGender()), player)
         return false
     end
@@ -493,7 +493,61 @@ function SHOP_UI.LevelHandler(player, data)
         level = data[KEYS.service.reward_1]
     end
 
-    player:SetLevel(level)--设定玩家为 升级后的等级
+    -- 如果是DK，则需要跳过出生任务
+    local cl = player:GetClass() --获取玩家的职业
+    if cl == 6 then
+        -- 如果是DK
+        local STARTER_QUESTS = { 12593, 12619, 12842, 12848, 12636, 12641, 12657, 12678, 12679, 12680, 12687, 12698, 12701, 12706, 12716, 12719, 12720, 12722, 12724, 12725, 12727, 12733, -1, 12751, 12754, 12755, 12756, 12757, 12779, 12801, 13165, 13166 };
+        local specialSurpriseQuestId = -1
+        local race = player:GetRace()
+        local team = player:GetTeam()
+        if race == 6 then
+            specialSurpriseQuestId = 12739
+        elseif race == 4 then
+            specialSurpriseQuestId = 12743;
+        elseif race == 3 then
+            specialSurpriseQuestId = 12744;
+        elseif race == 7 then
+            specialSurpriseQuestId = 12745;
+        elseif race == 11 then
+            specialSurpriseQuestId = 12746;
+        elseif race == 10 then
+            specialSurpriseQuestId = 12747;
+        elseif race == 2 then
+            specialSurpriseQuestId = 12748;
+        elseif race == 8 then
+            specialSurpriseQuestId = 12749;
+        elseif race == 5 then
+            specialSurpriseQuestId = 12750;
+        elseif race == 1 then
+            specialSurpriseQuestId = 12742;
+        end
+
+        STARTER_QUESTS[23] = specialSurpriseQuestId;
+        if team == 0 then
+            STARTER_QUESTS[33] = 13188
+        else
+            STARTER_QUESTS[33] = 13189
+        end
+        --用一个for循环，依次对任务进行处理
+        for k, v in ipairs(STARTER_QUESTS) do
+            local quest_status = player:GetQuestStatus(v)
+            if quest_status == 0 then
+                --没这个任务，自动加这个任务，然后完成
+                player:AddQuest(v)
+                player:CompleteQuest(v)
+                player:RewardQuest(v)
+            end
+        end
+        player:AddItem(38664);
+        player:AddItem(39322);
+        player:AddItem(38632);
+        player:SetLevel(level)--设定玩家为 升级后的等级
+        player:SaveToDB() --保存数据
+    else
+        player:SetLevel(level)--设定玩家为 升级后的等级
+        player:SaveToDB() --保存数据
+    end
     return true
 
 end
