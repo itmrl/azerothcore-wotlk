@@ -14,6 +14,7 @@ local hellXpRate = 1
 -- 满级等级
 local fullLevel = 80
 
+-- 发送邮件的角色ID
 local emailSendGuid = 1
 
 -- 职业颜色
@@ -117,6 +118,7 @@ local function OnLevelChange(event, player, oldLevel)
                 SendWorldMessage("|cFFFF0000[系统公告]|r 玩家 " .. GetPlayerInfo(player) .. " |cFF0000FF【常规模式】|r挑战成功。")
                 CharDBQuery("UPDATE character_survival_mode set mode=11,TOTALTIME="..player:GetTotalPlayedTime().." WHERE GUID=" .. guid)
                 player:RemoveSpell(90501)
+                player:AddItem(80010)
             elseif survivalModePlayers[guid] == 2 then
                 -- 硬核成就
                 player:SetAchievement(10000)
@@ -124,6 +126,7 @@ local function OnLevelChange(event, player, oldLevel)
                 SendMail("恭喜！硬核模式挑战成功！", "亲爱的" .. player:GetName() .. "：\n\n  所有坎坷，终成坦途！愿你永远保持初心，热爱并享受这个世界！\n\n Forever WLK仿官公益服", guid, emailSendGuid, 61, 0, 0, 0, 23162, 1, 23162, 1, 80002, 200, 80001, 30, 80011, 1)
                 CharDBQuery("UPDATE character_survival_mode set mode=12,TOTALTIME="..player:GetTotalPlayedTime().." WHERE GUID=" .. guid)
                 player:RemoveSpell(90502)
+                player:AddItem(80010)
             elseif survivalModePlayers[guid] == 3 then
                 -- 地狱成就
                 player:SetAchievement(10001)
@@ -131,6 +134,7 @@ local function OnLevelChange(event, player, oldLevel)
                 SendMail("恭喜！地狱模式挑战成功！", "亲爱的" .. player:GetName() .. "：\n\n  所有坎坷，终成坦途！愿你永远保持初心，热爱并享受这个世界！\n\n Forever WLK仿官公益服", guid, emailSendGuid, 61, 0, 0, 0, 23162, 1, 23162, 1, 23162, 1, 23162, 1, 80002, 300, 80001, 50, 80012, 1)
                 CharDBQuery("UPDATE character_survival_mode set mode=13,TOTALTIME="..player:GetTotalPlayedTime().." WHERE GUID=" .. guid)
                 player:RemoveSpell(90503)
+                player:AddItem(80010)
             end
             survivalModePlayers[guid] = nil
             survivalDeadPlayers[guid] = nil
@@ -166,15 +170,6 @@ local function onDeath(player, killerInfo)
     player:SaveToDB()
     CharDBQuery("UPDATE character_survival_mode SET DEAD=1 WHERE GUID=" .. guid)
     CharDBQuery("INSERT INTO one_life_list(guid,account,`name`,`level`,xp,areaId) select guid,account,`name`,`level`,xp," .. player:GetAreaId() .. " as areaId from characters where guid = " .. guid)
-    -- 如果DK角色死亡，则该角色所属账号下的一命角色也同步死亡
-    --local result = CharDBQuery("SELECT t1.guid,t1.level,t2.mode,t2.dead FROM characters t1 inner join character_survival_mode t2 on t1.guid = t2.guid where t2.mode in (2,3) and t2.dead = 0 and t1.level>=55 and t1.account="..accountId)
-    --if result then
-    --    repeat
-    --        local gid = result:GetUInt32(0)
-    --        survivalDeadPlayers[gid] = 1
-    --        CharDBQuery("UPDATE character_survival_mode SET DEAD=1 WHERE GUID=" .. gid)
-    --    until not result:NextRow()
-    --end
 end
 
 -- 被玩家杀死
@@ -269,6 +264,8 @@ local function OneSelect(event, player, creature, sender, intid, code)
             survivalModePlayers[guid] = 1
             survivalDeadPlayers[guid] = 0
             player:LearnSpell(90501)
+            -- 常规模式奖励10个新人币购买传家宝
+            player:AddItem(80003,10)
             player:SendBroadcastMessage("开启【常规模式】成功！")
             SendWorldMessage("|cFFFF0000[系统公告]|r 玩家 " .. GetPlayerInfo(player) .. " 开启了|cFF0000FF【常规模式】|r。")
             player:GossipComplete()
