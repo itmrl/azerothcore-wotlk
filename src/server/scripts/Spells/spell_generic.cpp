@@ -4003,8 +4003,8 @@ enum Mounts
     SPELL_BRUTAL_NETHER_DRAKE_310           = 90305,
 
     // 纯血火鹰
-    SPELL_FIRE_HAWK_150        = 90306,
-    SPELL_FIRE_HAWK_310        = 90307
+    SPELL_FIRE_HAWK_150        = 90302,
+    SPELL_FIRE_HAWK_310        = 90303
 
 };
 
