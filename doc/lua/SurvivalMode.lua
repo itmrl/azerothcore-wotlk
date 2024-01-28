@@ -47,8 +47,10 @@ local function OnAddXP(event, player, amount, victim, source)
     if survivalModePlayers[guid] == nil then      -- 如果未选择生存模式，则无法获取经验
         if player:GetLevel() ~= fullLevel then
             player:SendBroadcastMessage("请在新手村找【生存模式大使】选择生存模式，否则无法获取经验!")
+            return 0
+        else
+            return amount
         end
-        return 0
     elseif survivalModePlayers[guid] == 1 then    -- 常规模式，不限制副本和组队
         return amount * normalXpRate
     elseif survivalModePlayers[guid] == 2 then    -- 硬核模式，限制副本和组队经验，队伍中存在超过5级玩家没有经验，副本中无法获取经验
