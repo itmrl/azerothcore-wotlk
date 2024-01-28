@@ -151,6 +151,20 @@ end
 function SHOP_UI.ItemHandler(player, data)
     local currency, amount = data[KEYS.service.currency], data[KEYS.service.price] - data[KEYS.service.discount] --获取数据库相应数值，货币种类。售价-打折
 
+    for i = 0, 7 do
+        --依次循环发放8套物品
+        for j = 1, data[KEYS.service.rewardCount_1 + i] do
+            if (data[KEYS.service.reward_1 + i] == 90002) then
+                if (player:GetLevel() ~= 80) then
+                    --一命模式玩家禁止使用该服务。
+                    player:SendAreaTriggerMessage("|cFFFF0000满级才允许使用本服务！|r")
+                    player:PlayDirectSound(GetSoundEffect("cantUse", player:GetRace(), player:GetGender()), player)
+                    return false
+                end
+            end
+        end
+    end
+
     local deducted = SHOP_UI.DeductCurrency(player, currency, amount) --扣除货币
 
     if not (deducted) then
@@ -220,6 +234,16 @@ function SHOP_UI.MountHandler(player, data)
                 knownCount = knownCount + 1
             end
             rewardCount = rewardCount + 1
+
+            -- 部分坐骑例如奥的灰烬需要先学习专家级骑术才可以学习
+            if (data[KEYS.service.reward_1 + i] == 40192 or data[KEYS.service.reward_1 + i] == 71342 or data[KEYS.service.reward_1 + i] == 58615) then
+                if(player:HasSpell(34091)) then
+                    -- 有专家骑术正常
+                else
+                    player:SendAreaTriggerMessage("|cFFFF0000购买该坐骑需要先学习专家级骑术！|r")
+                    return false
+                end
+            end
         end
     end
 
@@ -448,12 +472,21 @@ end
 function SHOP_UI.LevelHandler(player, data)
     local currency, amount = data[KEYS.service.currency], data[KEYS.service.price] - data[KEYS.service.discount]--获取数据库相应数值，货币种类。售价-打折
 
-    -- 判断如果是一命模式玩家，不允许使用该服务 TODO
+    -- 判断如果是一命模式玩家，不允许使用该服务
     local guid = player:GetGUIDLow()
-    local result = CharDBQuery("SELECT GUID,DEAD FROM character_survival_mode where mode in (2,3) guid=" .. guid)
+    local result = CharDBQuery("SELECT GUID,DEAD FROM character_survival_mode where mode in (2,3) and guid=" .. guid)
     if result then
         --一命模式玩家禁止使用该服务。
         player:SendAreaTriggerMessage("|cFFFF0000您当前生存模式不允许使用本服务！|r")
+        player:PlayDirectSound(GetSoundEffect("cantUse", player:GetRace(), player:GetGender()), player)
+        return false
+    end
+
+    local result = CharDBQuery("SELECT GUID,DEAD FROM character_survival_mode where guid=" .. guid)
+    if result then
+        -- 选择模式后才允许直升等级
+    else
+        player:SendAreaTriggerMessage("|cFFFF0000请先选择生存模式后才允许使用本服务！|r")
         player:PlayDirectSound(GetSoundEffect("cantUse", player:GetRace(), player:GetGender()), player)
         return false
     end

@@ -45,7 +45,9 @@ local function OnAddXP(event, player, amount, victim, source)
     end
     local guid = player:GetGUIDLow()
     if survivalModePlayers[guid] == nil then      -- 如果未选择生存模式，则无法获取经验
-        player:SendBroadcastMessage("请在新手村找【生存模式大使】选择生存模式，否则无法获取经验!")
+        if player:GetLevel() ~= fullLevel then
+            player:SendBroadcastMessage("请在新手村找【生存模式大使】选择生存模式，否则无法获取经验!")
+        end
         return 0
     elseif survivalModePlayers[guid] == 1 then    -- 常规模式，不限制副本和组队
         return amount * normalXpRate
@@ -233,22 +235,23 @@ end
 
 local function OneMenu(event, player, creature)
     local guid = player:GetGUIDLow()
-    if survivalModePlayers[guid] == nil then
-        player:GossipMenuAddItem(0, "————————|n您尚未选择生存模式|n————————|n|n", 0, 999)
-        player:GossipMenuAddItem(0, "|TInterface\\icons\\achievement_reputation_01:30:30:0:0|t 开启|cFF0000FF【常规模式】|r", 0, 1, false, "重要提示\n 选择模式前请仔细阅读生存模式说明！")
-        player:GossipMenuAddItem(0, "|TInterface\\icons\\Ability_Warrior_TitansGrip:30:30:0:0|t 开启|cFF4B0082【硬核模式】|r", 0, 2, false, "重要提示\n 选择模式前请仔细阅读生存模式说明！")
-        player:GossipMenuAddItem(0, "|TInterface\\icons\\Ability_Creature_Cursed_02:30:30:0:0|t 开启|cFFB22222【地狱模式】|r", 0, 3, false, "重要提示\n 选择模式前请仔细阅读生存模式说明！")
+    if player:GetLevel() == fullLevel then
+        player:GossipMenuAddItem(0, "————————|n您已经满级了，不能选择生存模式！|n————————|n|n", 0, 999)
+    else
+        if survivalModePlayers[guid] == nil then
+            player:GossipMenuAddItem(0, "————————|n您尚未选择生存模式|n————————|n|n", 0, 999)
+            player:GossipMenuAddItem(0, "|TInterface\\icons\\achievement_reputation_01:30:30:0:0|t 开启|cFF0000FF【常规模式】|r", 0, 1, false, "重要提示\n 选择模式前请仔细阅读生存模式说明！")
+            player:GossipMenuAddItem(0, "|TInterface\\icons\\Ability_Warrior_TitansGrip:30:30:0:0|t 开启|cFF4B0082【硬核模式】|r", 0, 2, false, "重要提示\n 选择模式前请仔细阅读生存模式说明！")
+            player:GossipMenuAddItem(0, "|TInterface\\icons\\Ability_Creature_Cursed_02:30:30:0:0|t 开启|cFFB22222【地狱模式】|r", 0, 3, false, "重要提示\n 选择模式前请仔细阅读生存模式说明！")
+        elseif survivalModePlayers[guid] == 1 then
+            player:GossipMenuAddItem(0, "————————|n您现在是：|cFF0000FF【常规模式】|n————————|n|n", 0, 999)
+        elseif survivalModePlayers[guid] == 2 then
+            player:GossipMenuAddItem(0, "————————|n您现在是：|cFF4B0082【硬核模式】|n————————|n|n", 0, 999)
+        elseif survivalModePlayers[guid] == 3 then
+            player:GossipMenuAddItem(0, "————————|n您现在是：|cFFB22222【地狱模式】|n————————|n|n", 0, 999)
+        end
+        player:GossipMenuAddItem(0, "|TInterface\\icons\\Spell_ChargePositive:30:30:0:0|t 生存模式说明", 0, 5)
     end
-    if survivalModePlayers[guid] == 1 then
-        player:GossipMenuAddItem(0, "————————|n您现在是：|cFF0000FF【常规模式】|n————————|n|n", 0, 999)
-    end
-    if survivalModePlayers[guid] == 2 then
-        player:GossipMenuAddItem(0, "————————|n您现在是：|cFF4B0082【硬核模式】|n————————|n|n", 0, 999)
-    end
-    if survivalModePlayers[guid] == 3 then
-        player:GossipMenuAddItem(0, "————————|n您现在是：|cFFB22222【地狱模式】|n————————|n|n", 0, 999)
-    end
-    player:GossipMenuAddItem(0, "|TInterface\\icons\\Spell_ChargePositive:30:30:0:0|t 生存模式说明", 0, 5)
     player:GossipSendMenu(1, creature)
 end
 
@@ -263,7 +266,6 @@ local function OneSelect(event, player, creature, sender, intid, code)
             CharDBQuery("INSERT INTO character_survival_mode (GUID,MODE) VALUES (" .. guid .. ",1)")
             survivalModePlayers[guid] = 1
             survivalDeadPlayers[guid] = 0
-            player:LearnSpell(90501)
             -- 常规模式奖励10个新人币购买传家宝
             player:AddItem(80003,10)
             player:SendBroadcastMessage("开启【常规模式】成功！")
@@ -314,8 +316,8 @@ local function OneSelect(event, player, creature, sender, intid, code)
                 CharDBQuery("INSERT INTO character_survival_mode (GUID,MODE) VALUES (" .. guid .. ",2)")
                 survivalModePlayers[guid] = 2
                 survivalDeadPlayers[guid] = 0
-                player:LearnSpell(90502)
                 player:SendBroadcastMessage("开启【硬核模式】成功！")
+                player:GossipComplete()
                 SendWorldMessage("|cFFFF0000[系统公告]|r 玩家 " .. GetPlayerInfo(player) .. " 开启了|cFF4B0082【硬核模式】|r, 升级之路充满坎坷，祝您一切顺利！。")
             end
         else
@@ -367,9 +369,9 @@ local function OneSelect(event, player, creature, sender, intid, code)
                 CharDBQuery("INSERT INTO character_survival_mode (GUID,MODE) VALUES (" .. guid .. ",3)")
                 survivalModePlayers[guid] = 3
                 survivalDeadPlayers[guid] = 0
-                player:LearnSpell(90503)
                 player:SendBroadcastMessage("开启【地狱模式】成功！")
                 SendWorldMessage("|cFFFF0000[系统公告]|r 玩家 " .. GetPlayerInfo(player) .. " 开启了|cFF4B0082【地狱模式】|r, 升级之路充满坎坷，祝您一切顺利！。")
+                player:GossipComplete()
             end
         else
             player:SendBroadcastMessage("开启【地狱模式】失败，只有1级非DK或者55级DK角色才能开启【地狱模式】！")
@@ -380,7 +382,7 @@ local function OneSelect(event, player, creature, sender, intid, code)
         local x, y, z, o = player:GetX(), player:GetY(), player:GetZ(), player:GetO(), player:GetAreaId()
         player:GossipComplete()
         player:GossipClearMenu()
-        player:GossipMenuAddItem(30, "游戏生存模式说明", 0, 1, false, "|TInterface/FlavorImages/BloodElfLogo-small:64:64:0:-30|t\n\n|c0096FF96★游戏生存模式说明★|r\n\n\n\n|cFF0000FF【常规模式】|r：经验6倍，死亡后可以复活，可以购买传家宝，副本中可以获取经验。\n\n|cFF4B0082【硬核模式】|r：经验3倍，死亡后无法复活，无法购买传家宝，副本中无法获取经验，满级后获取专属称号及专家模式奖励。\n\n|cFFB22222【地狱模式】|r：经验1倍，死亡后无法复活，无法购买传家宝，副本中无法获取经验，满级后获取专属称号及地狱模式奖励。\n\n 一命模式复活条件：服务器集体卡顿、宕机，法师闪现、战士冲锋等卡虚空情况且有截图证明的。个人原因掉线，一些特殊任务比如视灵药剂、地狱火黑暗之门等情况导致死亡的均不予复活！")
+        player:GossipMenuAddItem(30, "游戏生存模式说明", 0, 1, false, "|TInterface/FlavorImages/BloodElfLogo-small:64:64:0:-30|t\n\n|c0096FF96★游戏生存模式说明★|r\n\n\n\n|cFF0000FF【常规模式】|r：经验6倍，死亡后可以复活，可以购买传家宝，副本中可以获取经验。\n\n|cFF4B0082【硬核模式】|r：经验3倍，死亡后无法复活，无法购买传家宝，副本中无法获取经验，满级后获取专属称号及专家模式奖励。\n\n|cFFB22222【地狱模式】|r：经验1倍，死亡后无法复活，无法购买传家宝，副本中无法获取经验，满级后获取专属称号及地狱模式奖励。\n\n DK开启【硬核模式】【地狱模式】必须该账号下存在至少1个一命角色(未死亡)且等级不小于55级，开启后账号下其他一命角色标识为死亡！ \n\n  一命模式复活条件：服务器集体卡顿、宕机，法师闪现、战士冲锋等卡虚空情况且有截图证明的。个人原因掉线，一些特殊任务比如视灵药剂、地狱火黑暗之门等情况导致死亡的均不予复活！")
         player:GossipSendMenu(100, player, 0)
     else
         player:GossipComplete()
@@ -395,6 +397,19 @@ CREATE TABLE IF NOT EXISTS `character_survival_mode` (
 `DEAD` TINYINT(3) NOT NULL DEFAULT 0 COMMENT '是否死亡：1-已死亡、0-未死亡',
 `TOTALTIME` INT(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '游戏时间',
 PRIMARY KEY (`GUID`)
+)
+ENGINE=InnoDB;
+]])
+
+CharDBQuery([[
+CREATE TABLE IF NOT EXISTS `one_life_list` (
+ `guid` int unsigned NOT NULL,
+ `account` int unsigned NOT NULL COMMENT 'Account Identifier',
+ `name` varchar(12) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+ `level` tinyint unsigned NOT NULL,
+ `xp` int unsigned NOT NULL,
+ `areaId` int unsigned NULL,
+ PRIMARY KEY (`guid`) USING BTREE
 )
 ENGINE=InnoDB;
 ]])

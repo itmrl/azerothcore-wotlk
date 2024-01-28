@@ -9,6 +9,7 @@ function ShowRankList(event, player, item)
 end
 
 function ShowRankMenu(item, player)
+    player:GossipMenuAddItem(0,"-------------英雄榜单--------------", 0, 1);
     local result = CharDBQuery("select guid,account,`name`,`level`,xp,areaId from one_life_list order by `level` desc,xp desc limit 10")
     if result then
         local num = 1

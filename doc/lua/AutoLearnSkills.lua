@@ -542,6 +542,7 @@ function SKILL.AutoLearn(event, player, oldLevel)
             end
             if (i == 40) then
                 player:LearnSpell(33391)
+                player:AddItem(32768);
             end
             if (i == 60) then
                 player:LearnSpell(34090)
