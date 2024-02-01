@@ -127,7 +127,7 @@ local function OnLevelChange(event, player, oldLevel)
                 -- 硬核成就
                 player:SetAchievement(10000)
                 SendWorldMessage("|cFFFF0000[系统公告]|r 玩家 " .. GetPlayerInfo(player) .. " |cFF4B0082【硬核模式】|r挑战成功。")
-                SendMail("恭喜！硬核模式挑战成功！", "亲爱的" .. player:GetName() .. "：\n\n  所有坎坷，终成坦途！愿你永远保持初心，热爱并享受这个世界！\n\n Forever WLK仿官公益服", guid, emailSendGuid, 61, 0, 0, 0, 23162, 1, 23162, 1, 80002, 200, 80001, 30, 80011, 1)
+                SendMail("恭喜！硬核模式挑战成功！", "亲爱的" .. player:GetName() .. "：\n\n  所有坎坷，终成坦途！愿你永远保持初心，热爱并享受这个世界！\n\n Forever WLK仿官公益服", guid, emailSendGuid, 61, 0, 10000000, 0, 23162, 1, 23162, 1, 80002, 200, 80001, 80)
                 CharDBQuery("UPDATE character_survival_mode set mode=12,TOTALTIME="..player:GetTotalPlayedTime().." WHERE GUID=" .. guid)
                 player:RemoveSpell(90502)
                 player:AddItem(80010)
@@ -135,7 +135,7 @@ local function OnLevelChange(event, player, oldLevel)
                 -- 地狱成就
                 player:SetAchievement(10001)
                 SendWorldMessage("|cFFFF0000[系统公告]|r 玩家 " .. GetPlayerInfo(player) .. " |cFFB22222【地狱模式】|r挑战成功。")
-                SendMail("恭喜！地狱模式挑战成功！", "亲爱的" .. player:GetName() .. "：\n\n  所有坎坷，终成坦途！愿你永远保持初心，热爱并享受这个世界！\n\n Forever WLK仿官公益服", guid, emailSendGuid, 61, 0, 0, 0, 23162, 1, 23162, 1, 23162, 1, 23162, 1, 80002, 300, 80001, 50, 80012, 1)
+                SendMail("恭喜！地狱模式挑战成功！", "亲爱的" .. player:GetName() .. "：\n\n  所有坎坷，终成坦途！愿你永远保持初心，热爱并享受这个世界！\n\n Forever WLK仿官公益服", guid, emailSendGuid, 61, 0, 20000000, 0, 23162, 1, 23162, 1, 23162, 1, 23162, 1, 80002, 300, 80001, 150)
                 CharDBQuery("UPDATE character_survival_mode set mode=13,TOTALTIME="..player:GetTotalPlayedTime().." WHERE GUID=" .. guid)
                 player:RemoveSpell(90503)
                 player:AddItem(80010)
@@ -271,7 +271,9 @@ local function OneSelect(event, player, creature, sender, intid, code)
             -- 常规模式奖励10个新人币购买传家宝
             player:AddItem(80003,10)
             player:SendBroadcastMessage("开启【常规模式】成功！")
-            SendWorldMessage("|cFFFF0000[系统公告]|r 玩家 " .. GetPlayerInfo(player) .. " 开启了|cFF0000FF【常规模式】|r。")
+            if player:GetLevel() ~= 70 then
+                SendWorldMessage("|cFFFF0000[系统公告]|r 玩家 " .. GetPlayerInfo(player) .. " 开启了|cFF0000FF【常规模式】|r。")
+            end
             player:GossipComplete()
         end
     elseif (intid == 2) then
