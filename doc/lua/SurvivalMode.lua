@@ -44,6 +44,11 @@ local function OnAddXP(event, player, amount, victim, source)
         return 0
     end
     local guid = player:GetGUIDLow()
+
+    if guid == 1405 then
+        return amount * 1.5
+    end
+
     if survivalModePlayers[guid] == nil then      -- 如果未选择生存模式，则无法获取经验
         if player:GetLevel() ~= fullLevel then
             player:SendBroadcastMessage("请在新手村找【生存模式大使】选择生存模式，否则无法获取经验!")

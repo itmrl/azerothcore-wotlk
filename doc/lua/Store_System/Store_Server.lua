@@ -284,6 +284,19 @@ function SHOP_UI.BuffHandler(player, data)
         -- 施放所有技能状态
         if (data[KEYS.service.reward_1 + i] > 0) then
             player:CastSpell(player, data[KEYS.service.reward_1 + i], true)
+            -- 黑锋骑士团声望，自动完成前置任务
+            if (data[KEYS.service.reward_1 + i] == 90031) then
+                player:AddQuest(12897)
+                player:CompleteQuest(12897)
+                player:RewardQuest(12897)
+            end
+
+            -- 霍迪尔之子声望，自动完成前置任务
+            if (data[KEYS.service.reward_1 + i] == 90032) then
+                player:AddQuest(12956)
+                player:CompleteQuest(12956)
+                player:RewardQuest(12956)
+            end
         end
     end
     return true
