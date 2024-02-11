@@ -286,6 +286,10 @@ function SHOP_UI.BuffHandler(player, data)
             player:CastSpell(player, data[KEYS.service.reward_1 + i], true)
             -- 黑锋骑士团声望，自动完成前置任务
             if (data[KEYS.service.reward_1 + i] == 90031) then
+                player:AddQuest(12896)
+                player:CompleteQuest(12896)
+                player:RewardQuest(12896)
+
                 player:AddQuest(12897)
                 player:CompleteQuest(12897)
                 player:RewardQuest(12897)
