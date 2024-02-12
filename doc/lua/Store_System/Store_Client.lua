@@ -1272,3 +1272,37 @@ SHOP_UI.MainFrame_Create()
 
 -- 修改游戏菜单框以添加商店按钮
 ModifyGameMenuFrame()
+
+
+
+-- 初始框图标
+local OlineMarketShow = CreateFrame("Button", "OlineMarketShow", UIParent)
+OlineMarketShow:SetSize(44, 44)
+OlineMarketShow:SetPoint("CENTER", 90, -250)
+OlineMarketShow:SetMovable(true)
+OlineMarketShow:EnableMouse(true)
+OlineMarketShow:RegisterForDrag("LeftButton")
+OlineMarketShow:SetPushedTexture("Interface\\BUTTONS\\UI-Quickslot-Depress")
+OlineMarketShow:SetBackdrop({bgFile = "Interface\\ICONS\\Inv_Misc_Tournaments_banner_Nightelf"})  --jifenshangcheng.blp   swCore\\shop  INV_Mount_WhimsyshireCloudMount01.blp
+OlineMarketShow:SetScript("OnDragStart", OlineMarketShow.StartMoving)
+OlineMarketShow:SetScript("OnDragStop", OlineMarketShow.StopMovingOrSizing)
+OlineMarketShow:SetScript("OnMouseUp",
+    function(self)
+        MainFrame_Toggle()
+    end)
+OlineMarketShow:SetScript("OnEnter",
+    function(self)
+        GameTooltip:SetOwner(OlineMarketShow, "ANCHOR_LEFT")
+        GameTooltip.default = 1;
+        GameTooltip:SetText("在线商城\n|cFFFFCC66按住拖动图标|r\n|cFF99FF33单击打开功能|r\n|cFF00CCFF再次单击关闭|r")
+        GameTooltip:Show()
+    end)
+
+OlineMarketShow:SetScript("OnLeave",
+    function(self)
+        GameTooltip:Hide()
+    end)
+
+OlineMarketShow:Show()
+
+AIO.SavePosition(OlineMarketShow) -- 这使得能够在重新加载UI或重新开始游戏时保存帧的位置
