@@ -236,7 +236,10 @@ function SHOP_UI.MountHandler(player, data)
             rewardCount = rewardCount + 1
 
             -- 部分坐骑例如奥的灰烬需要先学习专家级骑术才可以学习
-            if (data[KEYS.service.reward_1 + i] == 40192 or data[KEYS.service.reward_1 + i] == 71342 or data[KEYS.service.reward_1 + i] == 58615) then
+            if (data[KEYS.service.reward_1 + i] == 40192 or data[KEYS.service.reward_1 + i] == 71342 or data[KEYS.service.reward_1 + i] == 58615
+                or data[KEYS.service.reward_1 + i] == 90317 or data[KEYS.service.reward_1 + i] == 90318 or data[KEYS.service.reward_1 + i] == 90319
+                or data[KEYS.service.reward_1 + i] == 90320 or data[KEYS.service.reward_1 + i] == 90321 or data[KEYS.service.reward_1 + i] == 90316
+                or data[KEYS.service.reward_1 + i] == 90314 or data[KEYS.service.reward_1 + i] == 90301 or data[KEYS.service.reward_1 + i] == 59976) then
                 if(player:HasSpell(34091)) then
                     -- 有专家骑术正常
                 else
