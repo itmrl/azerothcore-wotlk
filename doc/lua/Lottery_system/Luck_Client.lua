@@ -11,8 +11,8 @@ local ShopData = {
     { 44128, 1 }, --ss  极低毛皮
     { 80002, 1 }, --s   积分
     { 36908, 1 }, --ss  雪莲花
-    { 40752, 1 }, --s   英雄纹章
-    { 80001, 2 }, --ss  赞助币
+    { 40752, 2 }, --s   英雄纹章
+    { 80001, 1 }, --ss  赞助币
     { 90306, 1 }, --sss 暴雪巨熊
     { 80002, 2 }, --s   积分
     { 40753, 1 }, --ss  勇气纹章
@@ -314,7 +314,7 @@ LuckFrame:SetScript("OnShow",
     end)
 
 function LuckHandlers.ShowUseItemLink(player, S1, S2, S3)
-    LuckStrCmText:SetText("|cffFFC125极品装备.炫酷宝物.稀有材料.人品爆发即可拥有|r\n\n|cffFFC125每次抽奖需要消耗|r |T" .. GetItemIcon(S1) .. ":16|t " .. S3 .. " x |CFFFF0000" .. S2 .. "|r")
+    LuckStrCmText:SetText("|cffFFC125专业材料.稀有货币.新品坐骑.人品爆发即可拥有|r\n\n|cffFFC125每次抽奖需要消耗|r |T" .. GetItemIcon(S1) .. ":16|t " .. S3 .. " x |CFFFF0000" .. S2 .. "|r")
 end
 
 function LuckHandlers.StartCenter(player, P)
