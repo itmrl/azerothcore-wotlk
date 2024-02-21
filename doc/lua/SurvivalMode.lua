@@ -140,7 +140,7 @@ local function OnLevelChange(event, player, oldLevel)
                 -- 地狱成就
                 player:SetAchievement(10001)
                 SendWorldMessage("|cFFFF0000[系统公告]|r 玩家 " .. GetPlayerInfo(player) .. " |cFFB22222【地狱模式】|r挑战成功。")
-                SendMail("恭喜！地狱模式挑战成功！", "亲爱的" .. player:GetName() .. "：\n\n  所有坎坷，终成坦途！愿你永远保持初心，热爱并享受这个世界！\n\n Forever WLK仿官公益服", guid, emailSendGuid, 61, 0, 20000000, 0, 23162, 1, 23162, 1, 23162, 1, 23162, 1, 80002, 300, 80001, 200, 90304, 1)
+                SendMail("恭喜！地狱模式挑战成功！", "亲爱的" .. player:GetName() .. "：\n\n  所有坎坷，终成坦途！愿你永远保持初心，热爱并享受这个世界！\n\n Forever WLK仿官公益服", guid, emailSendGuid, 61, 0, 20000000, 0, 23162, 1, 23162, 1, 23162, 1, 23162, 1, 80002, 300, 80001, 200, 90309, 1)
                 CharDBQuery("UPDATE character_survival_mode set mode=13,TOTALTIME="..player:GetTotalPlayedTime().." WHERE GUID=" .. guid)
                 player:RemoveSpell(90503)
                 player:AddItem(80010)
@@ -298,7 +298,7 @@ local function OneSelect(event, player, creature, sender, intid, code)
                 local accountId = player:GetAccountId()
                 local cl = player:GetClass() --获取玩家的职业
                 if cl == 6 then
-                    local result = CharDBQuery("SELECT t1.guid,t1.level,t2.mode,t2.dead FROM characters t1 inner join character_survival_mode t2 on t1.guid = t2.guid where t2.mode in (2,3) and t2.dead = 0 and t1.level>=55 and t1.account="..accountId)
+                    local result = CharDBQuery("SELECT t1.guid,t1.level,t2.mode,t2.dead FROM characters t1 inner join character_survival_mode t2 on t1.guid = t2.guid where t2.mode in (2) and t2.dead = 0 and t1.level>=55 and t1.account="..accountId)
                     if result then
                         if result:GetRowCount() == 0 then
                             player:SendBroadcastMessage("DK开启【硬核模式】必须该账号下存在至少1个一命角色(未死亡)且等级不小于55级！")
@@ -306,7 +306,7 @@ local function OneSelect(event, player, creature, sender, intid, code)
                             return
                         else
                             -- 将非DK的一命(未死亡)且等级不小于55级角色的标识为死亡
-                            local result = CharDBQuery("SELECT t1.guid,t1.level,t2.mode,t2.dead FROM characters t1 inner join character_survival_mode t2 on t1.guid = t2.guid where t2.mode in (2,3) and t2.dead = 0 and t1.class!=6 and t1.level>=55 and t1.account="..accountId)
+                            local result = CharDBQuery("SELECT t1.guid,t1.level,t2.mode,t2.dead FROM characters t1 inner join character_survival_mode t2 on t1.guid = t2.guid where t2.mode in (2) and t2.dead = 0 and t1.class!=6 and t1.level>=55 and t1.account="..accountId)
                             if result then
                                 repeat
                                     local gid = result:GetUInt32(0)
@@ -317,7 +317,7 @@ local function OneSelect(event, player, creature, sender, intid, code)
                             player:GossipComplete()
                         end
                     else
-                        player:SendBroadcastMessage("DK开启【硬核模式】必须该账号下存在至少1个一命角色(未死亡)且等级不小于55级！")
+                        player:SendBroadcastMessage("DK开启【硬核模式】必须该账号下存在至少1个一命角色(硬核模式未死亡)且等级不小于55级！")
                         player:GossipComplete()
                         return
                     end
@@ -351,7 +351,7 @@ local function OneSelect(event, player, creature, sender, intid, code)
                 local accountId = player:GetAccountId()
                 local cl = player:GetClass() --获取玩家的职业
                 if cl == 6 then
-                    local result = CharDBQuery("SELECT t1.guid,t1.level,t2.mode,t2.dead FROM characters t1 inner join character_survival_mode t2 on t1.guid = t2.guid where t2.mode in (2,3) and t2.dead = 0 and t1.level>=55 and t1.account="..accountId)
+                    local result = CharDBQuery("SELECT t1.guid,t1.level,t2.mode,t2.dead FROM characters t1 inner join character_survival_mode t2 on t1.guid = t2.guid where t2.mode in (3) and t2.dead = 0 and t1.level>=55 and t1.account="..accountId)
                     if result then
                         if result:GetRowCount() == 0 then
                             player:SendBroadcastMessage("DK开启【地狱模式】必须该账号下存在至少1个一命角色(未死亡)且等级不小于55级！")
@@ -359,7 +359,7 @@ local function OneSelect(event, player, creature, sender, intid, code)
                             return
                         else
                             -- 将非DK的一命(未死亡)且等级不小于55级角色的标识为死亡
-                            local result = CharDBQuery("SELECT t1.guid,t1.level,t2.mode,t2.dead FROM characters t1 inner join character_survival_mode t2 on t1.guid = t2.guid where t2.mode in (2,3) and t2.dead = 0 and t1.class!=6 and t1.level>=55 and t1.account="..accountId)
+                            local result = CharDBQuery("SELECT t1.guid,t1.level,t2.mode,t2.dead FROM characters t1 inner join character_survival_mode t2 on t1.guid = t2.guid where t2.mode in (3) and t2.dead = 0 and t1.class!=6 and t1.level>=55 and t1.account="..accountId)
                             if result then
                                 repeat
                                     local gid = result:GetUInt32(0)
@@ -370,7 +370,7 @@ local function OneSelect(event, player, creature, sender, intid, code)
                             player:GossipComplete()
                         end
                     else
-                        player:SendBroadcastMessage("DK开启【地狱模式】必须该账号下存在至少1个一命角色(未死亡)且等级不小于55级！")
+                        player:SendBroadcastMessage("DK开启【地狱模式】必须该账号下存在至少1个一命角色(地狱模式未死亡)且等级不小于55级！")
                         player:GossipComplete()
                         return
                     end
