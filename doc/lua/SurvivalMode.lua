@@ -17,6 +17,13 @@ local fullLevel = 80
 -- 发送邮件的角色ID
 local emailSendGuid = 1
 
+local Zone = {
+    ["location"] = {
+        [0] = {0, -8832.833, 633.1505, 94.2408, 1.70201},        -- 联盟位置 mapId,x,y,z,o
+        [1] = {1, 1601.08, -4378.69, 9.9846, 2.24414};           -- 部落位置 mapId,x,y,z,o
+    }
+}
+
 -- 职业颜色
 local ClassColor = {
     [1] = "FFC79C6E",  -- 战士
@@ -140,7 +147,7 @@ local function OnLevelChange(event, player, oldLevel)
                 -- 地狱成就
                 player:SetAchievement(10001)
                 SendWorldMessage("|cFFFF0000[系统公告]|r 玩家 " .. GetPlayerInfo(player) .. " |cFFB22222【地狱模式】|r挑战成功。")
-                SendMail("恭喜！地狱模式挑战成功！", "亲爱的" .. player:GetName() .. "：\n\n  所有坎坷，终成坦途！愿你永远保持初心，热爱并享受这个世界！\n\n Forever WLK仿官公益服", guid, emailSendGuid, 61, 0, 20000000, 0, 23162, 1, 23162, 1, 23162, 1, 23162, 1, 80002, 300, 80001, 200, 90309, 1)
+                SendMail("恭喜！地狱模式挑战成功！", "亲爱的" .. player:GetName() .. "：\n\n  所有坎坷，终成坦途！愿你永远保持初心，热爱并享受这个世界！\n\n Forever WLK仿官公益服", guid, emailSendGuid, 61, 0, 20000000, 0, 23162, 1, 23162, 1, 23162, 1, 23162, 1, 80002, 300, 80001, 200)
                 CharDBQuery("UPDATE character_survival_mode set mode=13,TOTALTIME="..player:GetTotalPlayedTime().." WHERE GUID=" .. guid)
                 player:RemoveSpell(90503)
                 player:AddItem(80010)
@@ -168,6 +175,50 @@ local function OnLogin(event, player)
             player:SendBroadcastMessage("当前角色为【地狱模式】！注意安全！")
         end
     end
+
+    -- 如果玩家所在地图在诺森德，则传送到主城
+    if (player:GetMapId() == 571) then
+        -- 如果玩家等级小于68级
+        if (player:GetLevel() < 68) then
+            local teamId = player:GetTeam() -- 0-联盟 1-部落
+            local mapId = Zone["location"][teamId][1]
+            local x = Zone["location"][teamId][2]
+            local y = Zone["location"][teamId][3]
+            local z = Zone["location"][teamId][4]
+            local o = Zone["location"][teamId][5]
+            -- 联盟传送到暴风城 部落传送到奥格瑞玛
+            if (teamId == 0) then
+                player:Teleport(mapId, x, y, z, o)
+            else
+                player:Teleport(mapId, x, y, z, o)
+            end
+            player:SendBroadcastMessage("玩家等级低于68级禁止进入【诺森德】!!!")
+            player:SendBroadcastMessage("玩家等级低于68级禁止进入【诺森德】!!!")
+            player:SendBroadcastMessage("玩家等级低于68级禁止进入【诺森德】!!!")
+        end
+    end
+
+    -- 如果玩家所在地图在外域，则传送到主城
+    --if (player:GetMapId() == 530) then
+    --    -- 如果玩家等级小于58级
+    --    if (player:GetLevel() < 58) then
+    --        local teamId = player:GetTeam() -- 0-联盟 1-部落
+    --        local mapId = Zone["location"][teamId][1]
+    --        local x = Zone["location"][teamId][2]
+    --        local y = Zone["location"][teamId][3]
+    --        local z = Zone["location"][teamId][4]
+    --        local o = Zone["location"][teamId][5]
+    --        -- 联盟传送到暴风城 部落传送到奥格瑞玛
+    --        if (teamId == 0) then
+    --            player:Teleport(mapId, x, y, z, o)
+    --        else
+    --            player:Teleport(mapId, x, y, z, o)
+    --        end
+    --        player:SendBroadcastMessage("玩家等级低于58级禁止进入【外域】!!!")
+    --        player:SendBroadcastMessage("玩家等级低于58级禁止进入【外域】!!!")
+    --        player:SendBroadcastMessage("玩家等级低于58级禁止进入【外域】!!!")
+    --    end
+    --end
 end
 
 -- 死亡处理
@@ -398,6 +449,54 @@ local function OneSelect(event, player, creature, sender, intid, code)
     end
 end
 
+-- 更新地图Zone时
+local function OnUpdateZone(event, player, newZone, newArea)
+    -- 如果玩家所在地图在诺森德，则传送到主城
+    if (player:GetMapId() == 571) then
+        -- 如果玩家等级小于68级
+        if (player:GetLevel() < 68) then
+            local teamId = player:GetTeam() -- 0-联盟 1-部落
+            local mapId = Zone["location"][teamId][1]
+            local x = Zone["location"][teamId][2]
+            local y = Zone["location"][teamId][3]
+            local z = Zone["location"][teamId][4]
+            local o = Zone["location"][teamId][5]
+            -- 联盟传送到暴风城 部落传送到奥格瑞玛
+            if (teamId == 0) then
+                player:Teleport(mapId, x, y, z, o)
+            else
+                player:Teleport(mapId, x, y, z, o)
+            end
+            player:SendBroadcastMessage("玩家等级低于68级禁止进入【诺森德】!!!")
+            player:SendBroadcastMessage("玩家等级低于68级禁止进入【诺森德】!!!")
+            player:SendBroadcastMessage("玩家等级低于68级禁止进入【诺森德】!!!")
+        end
+    end
+
+    -- 如果玩家所在地图在外域，则传送到主城
+    --if (player:GetMapId() == 530) then
+    --    -- 如果玩家等级小于58级
+    --    if (player:GetLevel() < 58) then
+    --        local teamId = player:GetTeam() -- 0-联盟 1-部落
+    --        local mapId = Zone["location"][teamId][1]
+    --        local x = Zone["location"][teamId][2]
+    --        local y = Zone["location"][teamId][3]
+    --        local z = Zone["location"][teamId][4]
+    --        local o = Zone["location"][teamId][5]
+    --        -- 联盟传送到暴风城 部落传送到奥格瑞玛
+    --        if (teamId == 0) then
+    --            player:Teleport(mapId, x, y, z, o)
+    --        else
+    --            player:Teleport(mapId, x, y, z, o)
+    --        end
+    --        player:SendBroadcastMessage("玩家等级低于58级禁止进入【外域】!!!")
+    --        player:SendBroadcastMessage("玩家等级低于58级禁止进入【外域】!!!")
+    --        player:SendBroadcastMessage("玩家等级低于58级禁止进入【外域】!!!")
+    --    end
+    --end
+
+end
+
 --初始建表
 CharDBQuery([[
 CREATE TABLE IF NOT EXISTS `character_survival_mode` (
@@ -442,5 +541,6 @@ RegisterPlayerEvent(8, OnCreatureKill) --被怪杀死的时候
 RegisterPlayerEvent(12, OnAddXP) --加经验的时候
 RegisterPlayerEvent(13, OnLevelChange) --等级变化的时候
 RegisterPlayerEvent(36, OnResurrect) --复活的时候
+RegisterPlayerEvent(27, OnUpdateZone) --Zone更新的时候
 RegisterCreatureGossipEvent(NPC_ENTRY, 1, OneMenu)
 RegisterCreatureGossipEvent(NPC_ENTRY, 2, OneSelect)
