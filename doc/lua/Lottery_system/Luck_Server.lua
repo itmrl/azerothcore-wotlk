@@ -1,4 +1,4 @@
-local AIO = AIO or require("AIO")
+﻿local AIO = AIO or require("AIO")
 
 local Me = require("MyFunction")
 
@@ -177,12 +177,12 @@ function UpdateBmp16(event, _, _, player)
         local s = { 2, 4, 7, 9, 11, 13, 16 } --低档次的奖池
         R = s[math.random(1, 7)]--随机其中一个给予奖励
     end
-    if (M > 9000 and M <= 9970) then
+    if (M > 9000 and M <= 9950) then
         --ss
         local ss = { 1, 3, 5, 8, 10, 12, 15 }--(中档次)的奖池
         R = ss[math.random(1, 7)]--随机其中一个给予奖励
     end
-    if (M > 9970 and M <= 9999) then
+    if (M > 9950 and M <= 9999) then
         --sss
         local ss = { 6 }--(高档次)的奖池
         R = ss[math.random(1, 1)]--随机其中一个给予奖励
