@@ -1,7 +1,7 @@
 ﻿print(">>Script: Online loading...OK")
 local Time = {--设置系统发放奖励的时间间隔 下面分别是秒，分钟，时(PS:时间间隔最少1分钟(或者60秒)要不出bug)
     ["s"] = 0,
-    ["m"] = 1,
+    ["m"] = 60,
     ["h"] = 0,
 }
 
@@ -46,7 +46,7 @@ local function Online_Reward()
             pOnlineTime[pGuid] = pOnlineTime[pGuid] + _OnlineTime
             pRewardCount[pGuid] = pRewardCount[pGuid] + 1
         else
-            player:SendBroadcastMessage("今日已累积获取10次在线泡点奖励，无法再次获取！")
+            p:SendBroadcastMessage("今日已累积获取10次在线泡点奖励，无法再次获取！")
         end
     end
     CreateLuaEvent(Online_Reward, _Time(Time.s, Time.m, Time.h) * 1000, 1)
